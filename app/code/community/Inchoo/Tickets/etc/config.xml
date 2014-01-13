@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Inchoo_Tickets>
+            <version>0.1.0</version>
+        </Inchoo_Tickets>
+    </modules>
+</config>
