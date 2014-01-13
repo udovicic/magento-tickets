@@ -5,4 +5,16 @@
             <version>0.1.0</version>
         </Inchoo_Tickets>
     </modules>
+
+    <global>
+        <!-- Module setup -->
+        <resources>
+            <inchoo_tickets_setup>
+                <setup>
+                    <module>Inchoo_Tickets</module>
+                    <class>Inchoo_Tickets_Model_Resource_Setup</class>
+                </setup>
+            </inchoo_tickets_setup>
+        </resources>
+    </global>
 </config>
