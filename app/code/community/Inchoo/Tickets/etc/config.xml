@@ -17,4 +17,26 @@
             </inchoo_tickets_setup>
         </resources>
     </global>
+
+    <frontend>
+        <!-- Layout config -->
+        <layout>
+            <updates>
+                <inchoo_tickets>
+                    <file>inchoo_tickets.xml</file>
+                </inchoo_tickets>
+            </updates>
+        </layout>
+
+        <!-- Router to Tickets controller -->
+        <routers>
+            <support>
+                <use>standard</use>
+                <args>
+                    <module>Inchoo_Tickets</module>
+                    <frontName>support</frontName>
+                </args>
+            </support>
+        </routers>
+    </frontend>
 </config>

@@ -1,0 +1,11 @@
+<layout version="0.1.0">
+    <customer_account translate="label">
+        <reference name="customer_account_navigation">
+            <action method="addLink">
+                <name>support</name>
+                <path>support/tickets</path>
+                <label>My Support Ticket</label>
+            </action>
+        </reference>
+    </customer_account>
+</layout>
