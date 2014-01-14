@@ -1,0 +1,35 @@
+<layout version="0.1.0">
+    <customer_account translate="label">
+        <reference name="customer_account_navigation">
+            <action method="addLink">
+                <name>support</name>
+                <path>support/tickets</path>
+                <label>My Support Ticket</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <support_tickets_index translate="label">
+        <label>My Support Tickets</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_list.phtml" />
+        </reference>
+    </support_tickets_index>
+
+    <support_tickets_thread translate="label">
+        <label>My Support Tickets</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_thread.phtml" />
+        </reference>
+    </support_tickets_thread>
+
+    <support_tickets_new translate="label">
+        <label>My Support Tickets</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_new.phtml" />
+        </reference>
+    </support_tickets_new>
+</layout>

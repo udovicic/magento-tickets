@@ -16,5 +16,46 @@
                 </setup>
             </inchoo_tickets_setup>
         </resources>
+
+        <!-- Models and collection -->
+        <models>
+            <tickets>
+                <class>Inchoo_Tickets_Model</class>
+                <resourceModel>tickets_resource</resourceModel>
+            </tickets>
+            <tickets_resource>
+                <class>Inchoo_Tickets_Model_Resource</class>
+                <entities>
+                    <thread>
+                        <table>inchoo_tickets_thread</table>
+                    </thread>
+                    <post>
+                        <table>inchoo_tickets_post</table>
+                    </post>
+                </entities>
+            </tickets_resource>
+        </models>
     </global>
+
+    <frontend>
+        <!-- Layout config -->
+        <layout>
+            <updates>
+                <inchoo_tickets>
+                    <file>inchoo_tickets.xml</file>
+                </inchoo_tickets>
+            </updates>
+        </layout>
+
+        <!-- Router to Tickets controller -->
+        <routers>
+            <support>
+                <use>standard</use>
+                <args>
+                    <module>Inchoo_Tickets</module>
+                    <frontName>support</frontName>
+                </args>
+            </support>
+        </routers>
+    </frontend>
 </config>

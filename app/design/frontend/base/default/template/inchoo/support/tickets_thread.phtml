@@ -1,0 +1,47 @@
+<?php $posts = Mage::registry('tickets_post'); ?>
+<div class="dashboard">
+    <div class="page-title">
+        <h1><?php echo Mage::registry('tickets_thread')->getSubject(); ?></h1>
+    </div>
+
+<?php foreach($posts as $post): ?>
+    <div class="box-account box-info">
+        <div class="box-head">
+            <h2><?php echo ($post->getAuthor()) ? $this->__('You') : $this->__('Admin'); ?></h2>
+        </div>
+        <div class="col2-set">
+            <div class="box">
+                <div class="box-content">
+                    <div class="col-1">
+                        <p><?php echo $post->getMessage(); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+</div>
+<?php if( Mage::registry('tickets_thread')->getStatus() == 1): ?>
+<form action="<?php echo $this->getUrl('*/*/reply', array('_current' => true)); ?>" method="post" autocomplete="off">
+    <div class="fieldset">
+        <h2 class="legend"><?php echo $this->__('Add reply') ?></h2>
+        <ul class="form-list">
+            <li class="wide ">
+                <div class="customer-reply">
+                    <div >
+                        <label for="reply"><?php echo $this->__('Message') ?></label>
+                        <div class="input-box">
+                            <textarea name="reply" id="reply"></textarea>
+                        </div>
+                    </div>
+            </li>
+        </ul>
+    </div>
+<?php endif; ?>
+    <div class="buttons-set">
+<?php if( Mage::registry('tickets_thread')->getStatus() == 1): ?>
+        <button type="submit" title="<?php echo $this->__('Post new reply') ?>" class="button"><span><?php echo $this->__('Reply') ?></span></button>
+<?php endif; ?>
+        <p class="back-link"><a href="<?php echo $this->getUrl('support/tickets/', array('_current' => true)); ?>"><small>« </small><?php echo $this->__('Back') ?></a></p>
+    </div>
+</form>
