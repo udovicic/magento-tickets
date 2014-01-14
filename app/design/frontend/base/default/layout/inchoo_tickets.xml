@@ -8,4 +8,13 @@
             </action>
         </reference>
     </customer_account>
+
+    <support_tickets_index translate="label">
+        <label>My Support Tickets</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_list.phtml" />
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </support_tickets_index>
 </layout>
