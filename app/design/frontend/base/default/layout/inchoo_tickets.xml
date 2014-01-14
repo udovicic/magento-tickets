@@ -24,4 +24,12 @@
             <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_thread.phtml" />
         </reference>
     </support_tickets_thread>
+
+    <support_tickets_new translate="label">
+        <label>My Support Tickets</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_new.phtml" />
+        </reference>
+    </support_tickets_new>
 </layout>
