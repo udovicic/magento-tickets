@@ -14,7 +14,14 @@
         <update handle="customer_account"/>
         <reference name="my.account.wrapper">
             <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_list.phtml" />
-            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
         </reference>
     </support_tickets_index>
+
+    <support_tickets_thread translate="label">
+        <label>My Support Tickets</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_thread.phtml" />
+        </reference>
+    </support_tickets_thread>
 </layout>
