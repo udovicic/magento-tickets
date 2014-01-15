@@ -44,6 +44,20 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
         $this->_redirect('*/*/index', array('_current' => true));
     }
 
+    /**
+     * Mark ticket as opened
+     */
+    public function reopenAction()
+    {
+        $thread_id = $this->getRequest()->getParam('id');
+        Mage::getModel('tickets/thread')
+            ->load($thread_id)
+            ->setStatus(1)
+            ->save();
+
+        $this->_redirect('*/*/index', array('_current' => true));
+    }
+
     public function activegridAction()
     {
         $this->getResponse()->setBody($this->getLayout()->createBlock(
