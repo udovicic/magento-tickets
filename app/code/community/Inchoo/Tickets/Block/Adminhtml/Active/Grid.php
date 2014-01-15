@@ -6,7 +6,7 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
     {
         parent::__construct();
 
-        $this->setId('tickets_tickets');
+        $this->setId('active_tickets');
         $this->setDefaultSort('thread_id', 'DESC');
         $this->setUseAjax(true);
     }
@@ -60,8 +60,8 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
             'width' => '20px',
         ));
 
-        $this->addColumn('edit', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Edit'),
+        $this->addColumn('close', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Close'),
             'width' => '20px',
             'sortable' => false,
             'filter' => false,
@@ -69,8 +69,8 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
             'getter' => 'getId',
             'actions' => array(
                 array(
-                    'url' => array('base' => '*/*/edit'),
-                    'caption' => Mage::helper('inchoo_tickets')->__('Edit'),
+                    'url' => array('base' => '*/*/close'),
+                    'caption' => Mage::helper('inchoo_tickets')->__('Close'),
                     'field' => 'id',
                 )
             )

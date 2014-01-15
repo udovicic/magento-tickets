@@ -4,9 +4,30 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
 {
     public function indexAction()
     {
-        $this->loadLayout()->_setActiveMenu('inchoo_tickets');
-        $this->_addLeft($this->getLayout()->createBlock('inchoo_tickets/adminhtml_tabs'));
-        $this->renderLayout();
+        $this->loadLayout()
+            ->_setActiveMenu('inchoo_tickets')
+            ->_addLeft($this->getLayout()->createBlock('inchoo_tickets/adminhtml_tabs'))
+            ->renderLayout();
+    }
+
+    public function respondAction()
+    {
+        $message = $this->getRequest()->getParam('message');
+        $thread_id = $this->getRequest()->getParam('id');
+
+        if ($message != null) {
+            $ticket = Mage::getModel('tickets/post')
+                ->setThreadIdFk($thread_id)
+                ->setAuthor(0)
+                ->setMessage($message)
+                ->save();
+        }
+
+        $this->loadLayout()->
+            _setActiveMenu('inchoo_tickets')
+            ->_addContent($this->getLayout()->createBlock('inchoo_tickets/adminhtml_respond'))
+            ->_addContent($this->getLayout()->createBlock('inchoo_tickets/adminhtml_thread'))
+            ->renderLayout();
     }
 
     public function activegridAction()
@@ -20,6 +41,13 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
     {
         $this->getResponse()->setBody($this->getLayout()->createBlock(
                 'inchoo_tickets/adminhtml_closed')->toHtml()
+        );
+    }
+
+    public function threadgridAction()
+    {
+        $this->getResponse()->setBody($this->getLayout()->createBlock(
+                'inchoo_tickets/adminhtml_thread')->toHtml()
         );
     }
 }

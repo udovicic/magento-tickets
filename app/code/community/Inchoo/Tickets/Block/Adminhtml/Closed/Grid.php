@@ -6,7 +6,7 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
     {
         parent::__construct();
 
-        $this->setId('tickets_tickets');
+        $this->setId('closed_tickets');
         $this->setDefaultSort('thread_id', 'DESC');
         $this->setUseAjax(true);
     }
@@ -60,8 +60,8 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
             'width' => '20px',
         ));
 
-        $this->addColumn('edit', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Edit'),
+        $this->addColumn('reopen', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Reopen'),
             'width' => '20px',
             'sortable' => false,
             'filter' => false,
@@ -69,8 +69,24 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
             'getter' => 'getId',
             'actions' => array(
                 array(
-                    'url' => array('base' => '*/*/edit'),
-                    'caption' => Mage::helper('inchoo_tickets')->__('Edit'),
+                    'url' => array('base' => '*/*/reopen'),
+                    'caption' => Mage::helper('inchoo_tickets')->__('Reopen'),
+                    'field' => 'id',
+                )
+            )
+        ));
+
+        $this->addColumn('delete', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Delete'),
+            'width' => '20px',
+            'sortable' => false,
+            'filter' => false,
+            'type' => 'action',
+            'getter' => 'getId',
+            'actions' => array(
+                array(
+                    'url' => array('base' => '*/*/delete'),
+                    'caption' => Mage::helper('inchoo_tickets')->__('Delete'),
                     'field' => 'id',
                 )
             )
@@ -93,11 +109,6 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
         ));
 
         return parent::_prepareColumns();
-    }
-
-    public function getRowUrl($row)
-    {
-        return Mage::helper('adminhtml')->getUrl('*/*/edit', array('id' => $row->getId()));
     }
 
     public function getGridUrl()
