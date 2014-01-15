@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <inchoo_tickets>
+            <title>Support tickets</title>
+            <sort_order>10</sort_order>
+            <action>adminhtml/inchoo_tickets</action>
+        </inchoo_tickets>
+    </menu>
+</config>
