@@ -30,6 +30,20 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
             ->renderLayout();
     }
 
+    /**
+     * Mark ticket as closed
+     */
+    public function closeAction()
+    {
+        $thread_id = $this->getRequest()->getParam('id');
+        Mage::getModel('tickets/thread')
+            ->load($thread_id)
+            ->setStatus(0)
+            ->save();
+
+        $this->_redirect('*/*/index', array('_current' => true));
+    }
+
     public function activegridAction()
     {
         $this->getResponse()->setBody($this->getLayout()->createBlock(
