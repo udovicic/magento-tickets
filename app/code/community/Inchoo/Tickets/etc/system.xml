@@ -2,10 +2,10 @@
 <config>
     <sections>
         <!-- Insert new tab in admin panel -->
-        <incho_tickets module="incho_tickets">
+        <inchoo_tickets module="inchoo_tickets">
             <label>Support tickets</label>
             <tab>inchoo_tickets</tab>
             <show_in_default>1</show_in_default>
-        </incho_tickets>
+        </inchoo_tickets>
     </sections>
 </config>
