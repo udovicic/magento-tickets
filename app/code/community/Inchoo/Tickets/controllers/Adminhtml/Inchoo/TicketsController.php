@@ -2,6 +2,9 @@
 
 class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_Controller_Action
 {
+    /**
+     * List all active and closed tickets through tabbed interface
+     */
     public function indexAction()
     {
         $this->loadLayout()
@@ -10,11 +13,15 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
             ->renderLayout();
     }
 
+    /**
+     * Submit response to ticket
+     */
     public function respondAction()
     {
         $message = $this->getRequest()->getParam('message');
         $thread_id = $this->getRequest()->getParam('id');
 
+        /** submit response */
         if ($message != null) {
             $ticket = Mage::getModel('tickets/post')
                 ->setThreadIdFk($thread_id)
@@ -23,6 +30,7 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
                 ->save();
         }
 
+        /** Load form and previous messages */
         $this->loadLayout()->
             _setActiveMenu('inchoo_tickets')
             ->_addContent($this->getLayout()->createBlock('inchoo_tickets/adminhtml_respond'))
@@ -79,6 +87,9 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
         $this->_redirect('*/*/index', array('_current' => true));
     }
 
+    /**
+     * functions *gridAction() are used for grid sorting through ajax
+     */
     public function activegridAction()
     {
         $this->getResponse()->setBody($this->getLayout()->createBlock(
@@ -90,13 +101,6 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
     {
         $this->getResponse()->setBody($this->getLayout()->createBlock(
                 'inchoo_tickets/adminhtml_closed')->toHtml()
-        );
-    }
-
-    public function threadgridAction()
-    {
-        $this->getResponse()->setBody($this->getLayout()->createBlock(
-                'inchoo_tickets/adminhtml_thread')->toHtml()
         );
     }
 }

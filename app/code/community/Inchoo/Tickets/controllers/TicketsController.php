@@ -2,6 +2,9 @@
 
 class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
 {
+    /**
+     * List all tickets from current customer
+     */
     public function indexAction()
     {
         /** get store and customer id */
@@ -23,14 +26,19 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         $this->renderLayout();
     }
 
+    /**
+     * List all messages inside current ticket
+     */
     public function threadAction()
     {
         $thread_id = $this->getRequest()->getParam('id');
 
+        /** Load message collection and ticket subject */
         $posts = Mage::getModel('tickets/post')->getcollection()
             ->addFieldtoFilter('thread_id_fk', $thread_id);
         $thread = Mage::getModel('tickets/thread')->load($thread_id);
 
+        /** Sotre data in registry for use in view */
         Mage::register('tickets_post', $posts);
         Mage::register('tickets_thread', $thread);
 
@@ -41,6 +49,9 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         $this->renderLayout();
     }
 
+    /**
+     * Submit new reply on existing ticket
+     */
     public function replyAction()
     {
         $post = $this->getRequest()->getParam('reply');
@@ -55,16 +66,19 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         $this->_redirect('support/tickets/thread/', array('_current' => true));
     }
 
+    /**
+     * Submit new ticket with first message
+     */
     public function newAction()
     {
         $subject = $this->getRequest()->getParam('subject');
         $message = $this->getRequest()->getParam('message');
 
         if ($message != null && $subject != null) {
-            // add new ticket
             $store_id = Mage::app()->getStore()->getId();
             $customer_id = Mage::getSingleton('customer/session')->getCustomer()->getId();
 
+            /** Create new thread */
             $thread = Mage::getModel('tickets/thread')
                 ->setCustomerIdFk($customer_id)
                 ->setStoreIdFk($store_id)
@@ -73,6 +87,7 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
                 ->save();
             $thread_id = $thread->getId();
 
+            /** Submit first message */
             Mage::getModel('tickets/post')
                 ->setThreadIdFk($thread_id)
                 ->setAuthor(1)
