@@ -58,6 +58,27 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
         $this->_redirect('*/*/index', array('_current' => true));
     }
 
+    /**
+     * Delete ticket and related posts
+     */
+    public function deleteAction()
+    {
+        $thread_id = $this->getRequest()->getParam('id');
+
+        /** Remove post entries */
+        $posts = Mage::getModel('tickets/post')
+            ->getCollection()
+            ->addFieldToFilter('thread_id_fk', $thread_id);
+        foreach ($posts as $post) $post->delete();
+
+        /** Remove ticket */
+        Mage::getModel('tickets/thread')
+            ->load($thread_id)
+            ->delete();
+
+        $this->_redirect('*/*/index', array('_current' => true));
+    }
+
     public function activegridAction()
     {
         $this->getResponse()->setBody($this->getLayout()->createBlock(
