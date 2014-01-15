@@ -35,6 +35,20 @@
                 </entities>
             </tickets_resource>
         </models>
+
+        <!-- Helper -->
+        <helpers>
+            <inchoo_tickets>
+                <class>Inchoo_Tickets_Helper</class>
+            </inchoo_tickets>
+        </helpers>
+
+        <!-- Admin block -->
+        <blocks>
+            <inchoo_tickets>
+                <class>Inchoo_Tickets_Block</class>
+            </inchoo_tickets>
+        </blocks>
     </global>
 
     <frontend>
@@ -58,4 +72,17 @@
             </support>
         </routers>
     </frontend>
+
+    <admin>
+        <!-- Admin router -->
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Inchoo_Tickets before="Mage_Adminhtml">Inchoo_Tickets_Adminhtml</Inchoo_Tickets>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>
