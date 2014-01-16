@@ -3,6 +3,18 @@
 class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
 {
     /**
+     * Deny access if user is not logged in
+     */
+    public function preDispatch()
+    {
+        parent::preDispatch();
+
+        if (!Mage::getSingleton('customer/session')->authenticate($this)) {
+            $this->setFlag('', 'no-dispatch', true);
+        }
+    }
+
+    /**
      * List all tickets from current customer
      */
     public function indexAction()
