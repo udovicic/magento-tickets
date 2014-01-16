@@ -43,10 +43,10 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
             'index' => 'thread_id',
         ));
 
-        $this->addColumn('customer_email', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Customer email'),
-            'index' => 'customer_email',
-            'width' => '50px',
+        $this->addColumn('customer_name', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Customer name'),
+            'index' => 'customer_id_fk',
+            'renderer' => 'Inchoo_Tickets_Block_Adminhtml_Active_Customer',
         ));
 
         $this->addcolumn('subject', array(
