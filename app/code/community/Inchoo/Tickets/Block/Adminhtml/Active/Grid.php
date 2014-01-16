@@ -17,11 +17,11 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
             ->getCollection()
             ->addFieldToFilter('status', '1');
         $tickets->getSelect()
-            ->join(
+            ->joinLeft(
                 array('c' => 'customer_entity'),
                 'main_table.customer_id_fk = c.entity_id',
                 array('customer_email' => 'c.email'))
-            ->join(
+            ->joinLeft(
                 array('s' => 'core_store'),
                 'main_table.store_id_fk = s.store_id',
                 array('store_name' => 's.name'))
@@ -43,10 +43,10 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
             'index' => 'thread_id',
         ));
 
-        $this->addColumn('customer_email', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Customer email'),
-            'index' => 'customer_email',
-            'width' => '50px',
+        $this->addColumn('customer_name', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Customer name'),
+            'index' => 'customer_id_fk',
+            'renderer' => 'Inchoo_Tickets_Block_Adminhtml_Active_Customer',
         ));
 
         $this->addcolumn('subject', array(
@@ -60,25 +60,9 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
             'width' => '20px',
         ));
 
-        $this->addColumn('close', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Close'),
-            'width' => '20px',
-            'sortable' => false,
-            'filter' => false,
-            'type' => 'action',
-            'getter' => 'getId',
-            'actions' => array(
-                array(
-                    'url' => array('base' => '*/*/close'),
-                    'caption' => Mage::helper('inchoo_tickets')->__('Close'),
-                    'field' => 'id',
-                )
-            )
-        ));
-
-        $this->addColumn('respond', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Respond'),
-            'width' => '20px',
+        $this->addColumn('action', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Action'),
+            'width' => '70px',
             'sortable' => false,
             'filter' => false,
             'type' => 'action',
@@ -87,6 +71,11 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
                 array(
                     'url' => array('base' => '*/*/respond'),
                     'caption' => Mage::helper('inchoo_tickets')->__('Respond'),
+                    'field' => 'id',
+                ),
+                array(
+                    'url' => array('base' => '*/*/close'),
+                    'caption' => Mage::helper('inchoo_tickets')->__('Close'),
                     'field' => 'id',
                 )
             )

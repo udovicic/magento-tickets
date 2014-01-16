@@ -17,11 +17,11 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
             ->getCollection()
             ->addFieldToFilter('status', '0');
         $tickets->getSelect()
-            ->join(
+            ->joinLeft(
                 array('c' => 'customer_entity'),
                 'main_table.customer_id_fk = c.entity_id',
                 array('customer_email' => 'c.email'))
-            ->join(
+            ->joinLeft(
                 array('s' => 'core_store'),
                 'main_table.store_id_fk = s.store_id',
                 array('store_name' => 's.name'))
@@ -43,10 +43,10 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
             'index' => 'thread_id',
         ));
 
-        $this->addColumn('customer_email', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Customer email'),
-            'index' => 'customer_email',
-            'width' => '50px',
+        $this->addColumn('customer_name', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Customer name'),
+            'index' => 'customer_id_fk',
+            'renderer' => 'Inchoo_Tickets_Block_Adminhtml_Closed_Customer',
         ));
 
         $this->addcolumn('subject', array(
@@ -60,9 +60,9 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
             'width' => '20px',
         ));
 
-        $this->addColumn('reopen', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Reopen'),
-            'width' => '20px',
+        $this->addColumn('actions', array(
+            'header' => Mage::helper('inchoo_tickets')->__('Actions'),
+            'width' => '70px',
             'sortable' => false,
             'filter' => false,
             'type' => 'action',
@@ -72,34 +72,12 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
                     'url' => array('base' => '*/*/reopen'),
                     'caption' => Mage::helper('inchoo_tickets')->__('Reopen'),
                     'field' => 'id',
-                )
-            )
-        ));
-
-        $this->addColumn('delete', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Delete'),
-            'width' => '20px',
-            'sortable' => false,
-            'filter' => false,
-            'type' => 'action',
-            'getter' => 'getId',
-            'actions' => array(
+                ),
                 array(
                     'url' => array('base' => '*/*/delete'),
                     'caption' => Mage::helper('inchoo_tickets')->__('Delete'),
                     'field' => 'id',
-                )
-            )
-        ));
-
-        $this->addColumn('respond', array(
-            'header' => Mage::helper('inchoo_tickets')->__('Respond'),
-            'width' => '20px',
-            'sortable' => false,
-            'filter' => false,
-            'type' => 'action',
-            'getter' => 'getId',
-            'actions' => array(
+                ),
                 array(
                     'url' => array('base' => '*/*/respond'),
                     'caption' => Mage::helper('inchoo_tickets')->__('Respond'),

@@ -3,6 +3,18 @@
 class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
 {
     /**
+     * Deny access if user is not logged in
+     */
+    public function preDispatch()
+    {
+        parent::preDispatch();
+
+        if (!Mage::getSingleton('customer/session')->authenticate($this)) {
+            $this->setFlag('', 'no-dispatch', true);
+        }
+    }
+
+    /**
      * List all tickets from current customer
      */
     public function indexAction()
@@ -13,10 +25,9 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
 
         /** retreive collection */
         $tickets = Mage::getModel('tickets/thread')->getCollection()
-            ->addFieldToFilter('customer_id_fk', $customer_id)
-            ->addFieldToFilter('store_id_fk', $store_id);
+            ->addFieldToFilter('customer_id_fk', $customer_id);
 
-        /** load layout */
+        /** load layout variables */
         Mage::register('tickets_thread', $tickets);
 
         $this->loadLayout();
@@ -54,15 +65,40 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
      */
     public function replyAction()
     {
-        $post = $this->getRequest()->getParam('reply');
+        /** Get user input */
+        $message = $this->getRequest()->getParam('reply');
         $thread_id = $this->getRequest()->getParam('id');
 
         $ticket = Mage::getModel('tickets/post');
         $ticket->setThreadIdFk($thread_id)
             ->setAuthor(1)
-            ->setMessage($post)
+            ->setMessage($message)
             ->save();
 
+        /** Send email notification */
+        if (Mage::helper('inchoo_tickets')->notifyAdminResponse() == 1){
+            Mage::getModel('core/email_template')
+                ->setDesignConfig(array('area' => 'frontend', 0))//'store' => $storeId))
+                ->sendTransactional(
+                    Mage::helper('inchoo_tickets')->getEmailTemplateAdminRespond(),
+                    array(
+                        'email' => Mage::helper('inchoo_tickets')->getEmailSender(),
+                        'name' => 'Admin',
+                    ),
+                    Mage::helper('inchoo_tickets')->getAdminMail(),
+                    null,
+                    array(
+                        'customer_name' => Mage::getSingleton('customer/session')->getCustomer()->getName(),
+                        'ticket_url' => Mage::helper('adminhtml')
+                                ->getUrl("inchoo/tickets/respond", array('id' => $thread_id)),
+                        'ticket_subject' => Mage::getModel('tickets/thread')
+                                ->load($thread_id)->getSubject(),
+                        'ticket_message' => $message,
+                    )
+                );
+        }
+
+        /** Redirect user to thread view */
         $this->_redirect('support/tickets/thread/', array('_current' => true));
     }
 
@@ -94,6 +130,31 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
                 ->setMessage($message)
                 ->save();
 
+            /** Send email notification */
+            if (Mage::helper('inchoo_tickets')->notifyAdminNew() == 1) {
+                Mage::getModel('core/email_template')
+                    ->setDesignConfig(array('area' => 'frontend', 0))//'store' => $storeId))
+                    ->sendTransactional(
+                        Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew(),
+                        array(
+                            'email' => Mage::helper('inchoo_tickets')->getEmailSender(),
+                            'name' => 'Admin',
+                        ),
+                        Mage::helper('inchoo_tickets')->getAdminMail(),
+                        null,
+                        array(
+                            'customer_name' => Mage::getSingleton('customer/session')->getCustomer()->getName(),
+                            'ticket_url' => Mage::helper('adminhtml')
+                                    ->getUrl("inchoo/tickets/respond", array('id' => $thread_id)),
+                            'site_url' => Mage::getUrl(),
+                            'site_name' => Mage::app()->getWebsite()->getName(),
+                            'ticket_subject' => Mage::getModel('tickets/thread')
+                                    ->load($thread_id)->getSubject(),
+                            'ticket_message' => $message,
+                        )
+                    );
+            }
+
             $this->_redirect('*/*/thread', array('_current' => true, 'id' => $thread_id));
         }
 
@@ -102,5 +163,26 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
             $this->getLayout()->createBlock('customer/account_dashboard')
         );
         $this->renderLayout();
+    }
+
+    public function testAction()
+    {
+        $data = array(
+            'notify-customer' => Mage::helper('inchoo_tickets')->notifyCustomer(),
+            'notify-admin-new' => Mage::helper('inchoo_tickets')->notifyAdminNew(),
+            'notify-admin-response' => Mage::helper('inchoo_tickets')->notifyAdminResponse(),
+            'email-sender' => Mage::helper('inchoo_tickets')->getEmailSender(),
+            'customer-subject' => Mage::helper('inchoo_tickets')->getCustomerEmailSubject(),
+            'admin-subject-new' => Mage::helper('inchoo_tickets')->getAdminEmailSubjectResponse(),
+            'admin-subject-reposne' => Mage::helper('inchoo_tickets')->getAdminEmailSubjectNew(),
+            'template-customer' => Mage::helper('inchoo_tickets')->getEmailTemplateCustomer(),
+            'template-admin-new' => Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew(),
+            'template-admin-response' => Mage::helper('inchoo_tickets')->getEmailTemplateAdminRespond(),
+        );
+
+        var_dump(Mage::getModel('core/email_template')->getDefaultTemplates());
+
+        var_dump($data);
+        die('hrad');
     }
 }
