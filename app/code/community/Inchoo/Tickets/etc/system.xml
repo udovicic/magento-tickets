@@ -43,14 +43,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </notify_admin_email>
-                        <notify_email_subject>
-                            <label>Email subject</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </notify_email_subject>
                         <notify_email_template_customer>
                             <label>Email template</label>
                             <frontend_type>select</frontend_type>
@@ -79,14 +71,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </noitfy_new_ticket>
-                        <notify_email_subject_new>
-                            <label>Email subject</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>13</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </notify_email_subject_new>
                         <notify_email_template_admin_new>
                             <label>Email template</label>
                             <frontend_type>select</frontend_type>
@@ -105,14 +89,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </notify_admin_response>
-                        <notify_email_subject_response>
-                            <label>Email subject</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>23</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </notify_email_subject_response>
                         <notify_email_template_admin_respond>
                             <label>Email template</label>
                             <frontend_type>select</frontend_type>

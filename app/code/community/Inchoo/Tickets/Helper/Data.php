@@ -17,21 +17,6 @@ class Inchoo_Tickets_Helper_Data extends Mage_Core_Helper_Data
     const XML_CONFIG_SENDER_EMAIL = 'inchoo_tickets/customer_notifications/notify_admin_email';
     const XML_CONFIG_ADMIN_RECEIVE_EMAIL = 'trans_email/ident_general/email';
 
-
-    /** Save default settings */
-    public function saveDefaultSettings($store = null)
-    {
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_CUSTOMER_NOTIFY_ON_RESPONSE, 1);
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_ADMIN_NOTIFY_ON_NEW_TICKET, 1);
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_ADMIN_NOTIFY_ON_NEW_RESPONSE, 1);
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_SENDER_SUBJECT, 'Support ticket reply');
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_SENDER_SUBJECT_ADMIN_NEW, 'New support ticket opened');
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_SENDER_SUBJECT_ADMIN_RESPOND, 'Customer submitted new response');
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_SENDER_TEMPLATE_CUSTOMER, 'inchoo_tickets_customer_respond');
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_SENDER_TEMPLATE_ADMIN_NEW, 'inchoo_tickets_admin_new');
-        Mage::getModel('core/config')->saveConfig(self::XML_CONFIG_SENDER_TEMPLATE_ADMIN_RESPOND, 'inchoo_tickets_admin_respond');
-    }
-
     /** Notification sending enabled/disabled */
     public function notifyCustomer($store = null)
     {

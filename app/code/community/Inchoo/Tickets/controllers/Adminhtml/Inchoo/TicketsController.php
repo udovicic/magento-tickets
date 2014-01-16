@@ -28,24 +28,39 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
                 ->setAuthor(0)
                 ->setMessage($message)
                 ->save();
-        }
 
-        /** Send email notification */
-        if (Mage::helper('inchoo_tickets')->notifyCustomer() == 1) {
-            $email = $email = $email = Mage::getModel('core/email_template')->loadByCode(
-                Mage::helper('inchoo_tickets')->getEmailTemplateCustomer());
-            $vars = array(
-                'customer_name' => Mage::getSingleton('customer/session')->getCustomer()->getName(),
-                'ticket_url' => Mage::getUrl('support/tickets/thread', array('id' => $thread_id)),
-                'ticket_subject' => Mage::getModel('tickets/thread')
-                        ->load($thread_id)->getSubject(),
-                'site_url' => Mage::getUrl(),
-                'site_name' => Mage::app()->getWebsite()->getName(),
-            );
-            $email->getProcessecTemplate($vars);
-            $email->setSenderEmail(Mage::helper('inchoo_tickets')->getEmailSender());
-            $email->send(Mage::getSingleton('customer/session')->getCustomer()->getEmail());
-//            ->setSubject(Mage::helper('inchoo_tickets')->getCustomerEmailSubject())
+            /** Send email notification */
+            if (Mage::helper('inchoo_tickets')->notifyCustomer() == 1) {
+                $customer_id = Mage::getModel('tickets/thread')
+                    ->load($thread_id)
+                    ->getCustomerIdFk();
+                $customer_email = Mage::getModel('customer/customer')
+                            ->load($customer_id)
+                            ->getEmail();
+                $customer_name = Mage::getModel('customer/customer')
+                    ->load($customer_id)
+                    ->getName();
+
+                Mage::getModel('core/email_template')
+                    ->setDesignConfig(array('area' => 'frontend', 0))//'store' => $storeId))
+                    ->sendTransactional(
+                        Mage::helper('inchoo_tickets')->getEmailTemplateCustomer(),
+                        array(
+                            'email' => Mage::helper('inchoo_tickets')->getEmailSender(),
+                            'name' => 'Admin',
+                        ),
+                        $customer_email,
+                        null,
+                        array(
+                            'customer_name' => $customer_name,
+                            'ticket_url' => Mage::getUrl('support/tickets/thread', array('id' => $thread_id)),
+                            'ticket_subject' => Mage::getModel('tickets/thread')
+                                    ->load($thread_id)->getSubject(),
+                            'site_url' => Mage::getUrl(),
+                            'site_name' => Mage::app()->getWebsite()->getName(),
+                        )
+                    );
+            }
         }
 
         /** Load form and previous messages */
