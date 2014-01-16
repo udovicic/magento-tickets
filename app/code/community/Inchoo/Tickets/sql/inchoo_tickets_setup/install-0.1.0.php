@@ -1,7 +1,6 @@
 <?php
 
 $installer = $this;
-$installer->startSetup();
 
 $installer->run("CREATE TABLE IF NOT EXISTS `inchoo_tickets_thread` (
   `thread_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
