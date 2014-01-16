@@ -13,8 +13,7 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
 
         /** retreive collection */
         $tickets = Mage::getModel('tickets/thread')->getCollection()
-            ->addFieldToFilter('customer_id_fk', $customer_id)
-            ->addFieldToFilter('store_id_fk', $store_id);
+            ->addFieldToFilter('customer_id_fk', $customer_id);
 
         /** load layout */
         Mage::register('tickets_thread', $tickets);
@@ -57,11 +56,32 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         $post = $this->getRequest()->getParam('reply');
         $thread_id = $this->getRequest()->getParam('id');
 
+        /** save message */
         $ticket = Mage::getModel('tickets/post');
         $ticket->setThreadIdFk($thread_id)
             ->setAuthor(1)
             ->setMessage($post)
             ->save();
+
+        /** send email notification */
+        if (Mage::helper('inchoo_tickets')->notifyAdminResponse() == 1){
+            $subject = Mage::helper('inchoo_tickets')->getAdminEmailSubjectNew();
+            $to = Mage::getStoreConfig('trans_email/ident_general/email');
+            $template_id = Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew();
+
+            /** Load template*/
+            $email = Mage::getModel('core/email_template');
+            if (is_numeric($template_id)) {
+                $email->loadByCode($template_id);
+            } else {
+                $email->loadDefault();
+            }
+
+            $vars = array();
+            $email->setSenderEmail($to);
+            $email->setTemplateSubject($subject);
+            $email->send($to, 'Admin',  $vars);
+        }
 
         $this->_redirect('support/tickets/thread/', array('_current' => true));
     }
@@ -102,5 +122,26 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
             $this->getLayout()->createBlock('customer/account_dashboard')
         );
         $this->renderLayout();
+    }
+
+    public function testAction()
+    {
+        $data = array(
+            'notify-customer' => Mage::helper('inchoo_tickets')->notifyCustomer(),
+            'notify-admin-new' => Mage::helper('inchoo_tickets')->notifyAdminNew(),
+            'notify-admin-response' => Mage::helper('inchoo_tickets')->notifyAdminResponse(),
+            'email-sender' => Mage::helper('inchoo_tickets')->getEmailSender(),
+            'customer-subject' => Mage::helper('inchoo_tickets')->getCustomerEmailSubject(),
+            'admin-subject-new' => Mage::helper('inchoo_tickets')->getAdminEmailSubjectResponse(),
+            'admin-subject-reposne' => Mage::helper('inchoo_tickets')->getAdminEmailSubjectNew(),
+            'template-customer' => Mage::helper('inchoo_tickets')->getEmailTemplateCustomer(),
+            'template-admin-new' => Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew(),
+            'template-admin-response' => Mage::helper('inchoo_tickets')->getEmailTemplateAdminRespond(),
+        );
+
+        var_dump(Mage::getModel('core/email_template')->getDefaultTemplates());
+
+        var_dump($data);
+        die('hrad');
     }
 }

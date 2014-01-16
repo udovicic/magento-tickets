@@ -17,11 +17,11 @@ class Inchoo_Tickets_Block_Adminhtml_Closed_Grid extends Mage_Adminhtml_Block_Wi
             ->getCollection()
             ->addFieldToFilter('status', '0');
         $tickets->getSelect()
-            ->join(
+            ->joinLeft(
                 array('c' => 'customer_entity'),
                 'main_table.customer_id_fk = c.entity_id',
                 array('customer_email' => 'c.email'))
-            ->join(
+            ->joinLeft(
                 array('s' => 'core_store'),
                 'main_table.store_id_fk = s.store_id',
                 array('store_name' => 's.name'))
