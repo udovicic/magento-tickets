@@ -39,6 +39,7 @@ class Inchoo_Tickets_Block_Adminhtml_Thread_Grid extends Mage_Adminhtml_Block_Wi
         $this->addColumn('author', array(
             'header' => Mage::helper('inchoo_tickets')->__('Author'),
             'index' => 'author',
+            'renderer' => 'Inchoo_Tickets_Block_Adminhtml_Thread_Author',
             'filter' => false,
             'sortable' => false,
             'width' => '50px',

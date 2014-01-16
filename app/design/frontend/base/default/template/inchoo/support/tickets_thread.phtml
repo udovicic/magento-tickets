@@ -22,16 +22,16 @@
 <?php endforeach; ?>
 </div>
 <?php if( Mage::registry('tickets_thread')->getStatus() == 1): ?>
-<form action="<?php echo $this->getUrl('*/*/reply', array('_current' => true)); ?>" method="post" autocomplete="off">
+<form action="<?php echo $this->getUrl('*/*/reply', array('_current' => true)); ?>" id="form-respond-ticket" method="post" autocomplete="off">
     <div class="fieldset">
         <h2 class="legend"><?php echo $this->__('Add reply') ?></h2>
         <ul class="form-list">
             <li class="wide ">
                 <div class="customer-reply">
                     <div >
-                        <label for="reply"><?php echo $this->__('Message') ?></label>
+                        <label for="reply" class="required"><em>*</em><?php echo $this->__('Message') ?></label>
                         <div class="input-box">
-                            <textarea name="reply" id="reply"></textarea>
+                            <textarea name="reply" id="reply" class="input-text  required-entry validation-passed"></textarea>
                         </div>
                     </div>
             </li>
@@ -44,4 +44,7 @@
 <?php endif; ?>
         <p class="back-link"><a href="<?php echo $this->getUrl('support/tickets/', array('_current' => true)); ?>"><small>« </small><?php echo $this->__('Back') ?></a></p>
     </div>
+<?php if( Mage::registry('tickets_thread')->getStatus() == 1): ?>
 </form>
+<script type="text/javascript">var customForm = new VarienForm('form-respond-ticket');</script>
+<?php endif; ?>
