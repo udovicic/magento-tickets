@@ -30,6 +30,24 @@ class Inchoo_Tickets_Adminhtml_Inchoo_TicketsController extends Mage_Adminhtml_C
                 ->save();
         }
 
+        /** Send email notification */
+        if (Mage::helper('inchoo_tickets')->notifyCustomer() == 1) {
+            $email = $email = $email = Mage::getModel('core/email_template')->loadByCode(
+                Mage::helper('inchoo_tickets')->getEmailTemplateCustomer());
+            $vars = array(
+                'customer_name' => Mage::getSingleton('customer/session')->getCustomer()->getName(),
+                'ticket_url' => Mage::getUrl('support/tickets/thread', array('id' => $thread_id)),
+                'ticket_subject' => Mage::getModel('tickets/thread')
+                        ->load($thread_id)->getSubject(),
+                'site_url' => Mage::getUrl(),
+                'site_name' => Mage::app()->getWebsite()->getName(),
+            );
+            $email->getProcessecTemplate($vars);
+            $email->setSenderEmail(Mage::helper('inchoo_tickets')->getEmailSender());
+            $email->send(Mage::getSingleton('customer/session')->getCustomer()->getEmail());
+//            ->setSubject(Mage::helper('inchoo_tickets')->getCustomerEmailSubject())
+        }
+
         /** Load form and previous messages */
         $this->loadLayout()->
             _setActiveMenu('inchoo_tickets')
