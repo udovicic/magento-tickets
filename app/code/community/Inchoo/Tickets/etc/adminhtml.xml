@@ -7,4 +7,25 @@
             <action>adminhtml/inchoo_tickets</action>
         </inchoo_tickets>
     </menu>
+
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <inchoo_tickets translate="title" module="customer">
+                                        <title>Support Tickets Configuration</title>
+                                        <sort_order>50</sort_order>
+                                    </inchoo_tickets>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
 </config>

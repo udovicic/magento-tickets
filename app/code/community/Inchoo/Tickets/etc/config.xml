@@ -49,6 +49,27 @@
                 <class>Inchoo_Tickets_Block</class>
             </inchoo_tickets>
         </blocks>
+
+        <!-- Email templates -->
+        <template>
+            <email>
+                <inchoo_tickets_customer_notifications_notify_email_template_customer translate="label" module="inchoo_tickets">
+                    <label>Support tickets - Customer notifications</label>
+                    <file>inchoo_tickets_customer.html</file>
+                    <type>html</type>
+                </inchoo_tickets_customer_notifications_notify_email_template_customer>
+                <inchoo_tickets_admin_notifications_notify_email_template_admin_respond translate="label" module="inchoo_tickets">
+                    <label>Support tickets - Admin notification on new ticket</label>
+                    <file>inchoo_tickets_admin_new.html</file>
+                    <type>html</type>
+                </inchoo_tickets_admin_notifications_notify_email_template_admin_respond>
+                <inchoo_tickets_admin_notifications_notify_email_template_admin_new translate="label" module="inchoo_tickets">
+                    <label>Support tickets - Admin notification on customer respond</label>
+                    <file>inchoo_tickets_admin_respond.html</file>
+                    <type>html</type>
+                </inchoo_tickets_admin_notifications_notify_email_template_admin_new>
+            </email>
+        </template>
     </global>
 
     <frontend>
@@ -85,4 +106,22 @@
             </adminhtml>
         </routers>
     </admin>
+
+    <!-- default config values -->
+    <default>
+        <!-- Used before value(config) is saved from admin -->
+        <inchoo_tickets>
+            <customer_notifications>
+                <notify_new_response>1</notify_new_response>
+                <notify_admin_email>-</notify_admin_email>
+                <notify_email_template_customer>inchoo_tickets_customer_notifications_notify_email_template_customer</notify_email_template_customer>
+            </customer_notifications>
+            <admin_notifications>
+                <noitfy_new_ticket>1</noitfy_new_ticket>
+                <notify_email_template_admin_new>inchoo_tickets_admin_notifications_notify_email_template_admin_new</notify_email_template_admin_new>
+                <notify_admin_response>1</notify_admin_response>
+                <notify_email_template_admin_respond>inchoo_tickets_admin_notifications_notify_email_template_admin_respond</notify_email_template_admin_respond>
+            </admin_notifications>
+        </inchoo_tickets>
+    </default>
 </config>

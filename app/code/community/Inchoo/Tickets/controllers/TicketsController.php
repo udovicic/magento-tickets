@@ -15,7 +15,7 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         $tickets = Mage::getModel('tickets/thread')->getCollection()
             ->addFieldToFilter('customer_id_fk', $customer_id);
 
-        /** load layout */
+        /** load layout variables */
         Mage::register('tickets_thread', $tickets);
 
         $this->loadLayout();
@@ -53,36 +53,40 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
      */
     public function replyAction()
     {
-        $post = $this->getRequest()->getParam('reply');
+        /** Get user input */
+        $message = $this->getRequest()->getParam('reply');
         $thread_id = $this->getRequest()->getParam('id');
 
-        /** save message */
         $ticket = Mage::getModel('tickets/post');
         $ticket->setThreadIdFk($thread_id)
             ->setAuthor(1)
-            ->setMessage($post)
+            ->setMessage($message)
             ->save();
 
-        /** send email notification */
+        /** Send email notification */
         if (Mage::helper('inchoo_tickets')->notifyAdminResponse() == 1){
-            $subject = Mage::helper('inchoo_tickets')->getAdminEmailSubjectNew();
-            $to = Mage::getStoreConfig('trans_email/ident_general/email');
-            $template_id = Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew();
-
-            /** Load template*/
-            $email = Mage::getModel('core/email_template');
-            if (is_numeric($template_id)) {
-                $email->loadByCode($template_id);
-            } else {
-                $email->loadDefault();
-            }
-
-            $vars = array();
-            $email->setSenderEmail($to);
-            $email->setTemplateSubject($subject);
-            $email->send($to, 'Admin',  $vars);
+            Mage::getModel('core/email_template')
+                ->setDesignConfig(array('area' => 'frontend', 0))//'store' => $storeId))
+                ->sendTransactional(
+                    Mage::helper('inchoo_tickets')->getEmailTemplateAdminRespond(),
+                    array(
+                        'email' => Mage::helper('inchoo_tickets')->getEmailSender(),
+                        'name' => 'Admin',
+                    ),
+                    Mage::helper('inchoo_tickets')->getAdminMail(),
+                    null,
+                    array(
+                        'customer_name' => Mage::getSingleton('customer/session')->getCustomer()->getName(),
+                        'ticket_url' => Mage::helper('adminhtml')
+                                ->getUrl("inchoo/tickets/respond", array('id' => $thread_id)),
+                        'ticket_subject' => Mage::getModel('tickets/thread')
+                                ->load($thread_id)->getSubject(),
+                        'ticket_message' => $message,
+                    )
+                );
         }
 
+        /** Redirect user to thread view */
         $this->_redirect('support/tickets/thread/', array('_current' => true));
     }
 
@@ -113,6 +117,31 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
                 ->setAuthor(1)
                 ->setMessage($message)
                 ->save();
+
+            /** Send email notification */
+            if (Mage::helper('inchoo_tickets')->notifyAdminNew() == 1) {
+                Mage::getModel('core/email_template')
+                    ->setDesignConfig(array('area' => 'frontend', 0))//'store' => $storeId))
+                    ->sendTransactional(
+                        Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew(),
+                        array(
+                            'email' => Mage::helper('inchoo_tickets')->getEmailSender(),
+                            'name' => 'Admin',
+                        ),
+                        Mage::helper('inchoo_tickets')->getAdminMail(),
+                        null,
+                        array(
+                            'customer_name' => Mage::getSingleton('customer/session')->getCustomer()->getName(),
+                            'ticket_url' => Mage::helper('adminhtml')
+                                    ->getUrl("inchoo/tickets/respond", array('id' => $thread_id)),
+                            'site_url' => Mage::getUrl(),
+                            'site_name' => Mage::app()->getWebsite()->getName(),
+                            'ticket_subject' => Mage::getModel('tickets/thread')
+                                    ->load($thread_id)->getSubject(),
+                            'ticket_message' => $message,
+                        )
+                    );
+            }
 
             $this->_redirect('*/*/thread', array('_current' => true, 'id' => $thread_id));
         }
