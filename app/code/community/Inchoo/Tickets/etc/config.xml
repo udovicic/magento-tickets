@@ -49,6 +49,27 @@
                 <class>Inchoo_Tickets_Block</class>
             </inchoo_tickets>
         </blocks>
+
+        <!-- Email templates -->
+        <template>
+            <email>
+                <inchoo_tickets_customer_respond translate="label" module="inchoo_tickets">
+                    <label>Support tickets - Customer notifications</label>
+                    <file>inchoo_tickets_customer.html</file>
+                    <type>html</type>
+                </inchoo_tickets_customer_respond>
+                <inchoo_tickets_admin_respond translate="label" module="inchoo_tickets">
+                    <label>Support tickets - Admin notification on new ticket</label>
+                    <file>inchoo_tickets_admin_new.html</file>
+                    <type>html</type>
+                </inchoo_tickets_admin_respond>
+                <inchoo_tickets_admin_new translate="label" module="inchoo_tickets">
+                    <label>Support tickets - Admin notification on customer respond</label>
+                    <file>inchoo_tickets_admin_respond.html</file>
+                    <type>html</type>
+                </inchoo_tickets_admin_new>
+            </email>
+        </template>
     </global>
 
     <frontend>
