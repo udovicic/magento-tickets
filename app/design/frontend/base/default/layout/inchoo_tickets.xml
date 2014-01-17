@@ -13,7 +13,7 @@
         <label>My Support Tickets</label>
         <update handle="customer_account"/>
         <reference name="my.account.wrapper">
-            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_list.phtml" />
+            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/tickets/tickets_list.phtml" />
         </reference>
     </support_tickets_index>
 
@@ -21,7 +21,7 @@
         <label>My Support Tickets</label>
         <update handle="customer_account"/>
         <reference name="my.account.wrapper">
-            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_thread.phtml" />
+            <block type="core/template" name="inchoo_support_ticket_thread" template="inchoo/tickets/tickets_thread.phtml" />
         </reference>
     </support_tickets_thread>
 
@@ -29,7 +29,7 @@
         <label>My Support Tickets</label>
         <update handle="customer_account"/>
         <reference name="my.account.wrapper">
-            <block type="core/template" name="inchoo_support_ticket_list" template="inchoo/support/tickets_new.phtml" />
+            <block type="core/template" name="inchoo_support_ticket_new" template="inchoo/tickets/tickets_new.phtml" />
         </reference>
     </support_tickets_new>
 </layout>
