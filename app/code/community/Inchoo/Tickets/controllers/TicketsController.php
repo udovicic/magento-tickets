@@ -164,25 +164,4 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         );
         $this->renderLayout();
     }
-
-    public function testAction()
-    {
-        $data = array(
-            'notify-customer' => Mage::helper('inchoo_tickets')->notifyCustomer(),
-            'notify-admin-new' => Mage::helper('inchoo_tickets')->notifyAdminNew(),
-            'notify-admin-response' => Mage::helper('inchoo_tickets')->notifyAdminResponse(),
-            'email-sender' => Mage::helper('inchoo_tickets')->getEmailSender(),
-            'customer-subject' => Mage::helper('inchoo_tickets')->getCustomerEmailSubject(),
-            'admin-subject-new' => Mage::helper('inchoo_tickets')->getAdminEmailSubjectResponse(),
-            'admin-subject-reposne' => Mage::helper('inchoo_tickets')->getAdminEmailSubjectNew(),
-            'template-customer' => Mage::helper('inchoo_tickets')->getEmailTemplateCustomer(),
-            'template-admin-new' => Mage::helper('inchoo_tickets')->getEmailTemplateAdminNew(),
-            'template-admin-response' => Mage::helper('inchoo_tickets')->getEmailTemplateAdminRespond(),
-        );
-
-        var_dump(Mage::getModel('core/email_template')->getDefaultTemplates());
-
-        var_dump($data);
-        die('hrad');
-    }
 }
