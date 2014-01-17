@@ -8,6 +8,7 @@ class Inchoo_Tickets_Block_Adminhtml_Active_Grid extends Mage_Adminhtml_Block_Wi
 
         $this->setId('active_tickets');
         $this->setDefaultSort('thread_id', 'DESC');
+        $this->_headerText = Mage::helper('inchoo_tickets')->__('Active customer tickets');
         $this->setUseAjax(true);
     }
 
