@@ -20,7 +20,6 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         /** get store and customer id */
-        $store_id = Mage::app()->getStore()->getId();
         $customer_id = Mage::getSingleton('customer/session')->getCustomer()->getId();
 
         /** retreive collection */
@@ -31,9 +30,6 @@ class Inchoo_Tickets_TicketsController extends Mage_Core_Controller_Front_Action
         Mage::register('tickets_thread', $tickets);
 
         $this->loadLayout();
-        $this->getLayout()->getBlock('content')->append(
-            $this->getLayout()->createBlock('customer/account_dashboard')
-        );
         $this->renderLayout();
     }
 

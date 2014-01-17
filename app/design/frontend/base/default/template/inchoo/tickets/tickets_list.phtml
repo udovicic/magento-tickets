@@ -1,39 +1,38 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml(); ?>
+<?php $collection = $this->getCollection(); ?>
 <div class="page-title title-buttons">
-    <h1><?php echo $this->__('My support tickets') ?></h1>
-        <button type="button" title="<?php echo $this->__('Open new support ticket.'); ?>" class="button" onclick="window.location='<?php echo $this->getUrl('*/*/new/', array('_current' => true)); ?>';"><span><?php echo $this->__('New ticket'); ?></span></button>
+    <h1><?php echo $this->__('Support tickets'); ?></h1>
+    <button type="button" title="<?php echo $this->__('Open new support ticket.'); ?>" class="button" onclick="window.location='<?php echo $this->getUrl('*/*/new/', array('_current' => true)); ?>';"><span><?php echo $this->__('New ticket'); ?></span></button>
 </div>
-<?php $tickets = Mage::Registry('tickets_thread'); ?>
-<?php if($tickets->getSize()): ?>
-    <table class="data-table" id="my-orders-table">
-        <colgroup>
-            <col width="1" />
-            <col />
-            <col width="1" />
-            <col width="1" />
-        </colgroup>
-        <thead>
+<?php echo $this->getPagerHtml(); ?>
+<?php if($collection->getSize()): ?>
+<table class="data-table" id="tickets-list">
+    <col width="1" />
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Ticket #') ?></th>
+            <th><?php echo $this->__('Subject') ?></th>
+            <th><?php echo $this->__('Status') ?></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $_odd=''; ?>
+        <?php foreach($collection as $_obj): ?>
             <tr>
-                <th><?php echo $this->__('Ticket #') ?></th>
-                <th><?php echo $this->__('Subject') ?></th>
-                <th><?php echo $this->__('Status') ?></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($tickets as $ticket): ?>
-            <tr>
-                <td><?php echo $ticket->getId(); ?></td>
-                <td><?php echo $ticket->getSubject(); ?></td>
-                <td><span class="nobr"><?php echo ($ticket->getStatus() == 1) ? $this->__('opened') : $this->__('closed'); ?></span></td>
-                <td><span class="nobr"><a href="<?php echo $this->getUrl('*/*/thread/', array('id' => $ticket->getId())); ?>"><?php echo $this->__('View ticket'); ?></a></span></td>
+                <td><?php echo $_obj->getId(); ?></td>
+                <td><?php echo $_obj->getSubject(); ?></td>
+                <td><span class="nobr"><?php echo ($_obj->getStatus() == 1) ? $this->__('opened') : $this->__('closed'); ?></span></td>
+                <td><span class="nobr"><a href="<?php echo $this->getUrl('*/*/thread/', array('id' => $_obj->getId())); ?>"><?php echo $this->__('View ticket'); ?></a></span></td>
             </tr>
         <?php endforeach; ?>
-        </tbody>
-    </table>
-
+    </tbody>
+</table>
+<script>decorateTable('tickets-list');</script>
+    <?php echo $this->getPagerHtml(); ?>
 <?php else: ?>
-    <p><?php echo $this->__('You do not have any support tickets.'); ?></p>
-<?php endif ?>
-<div class="buttons-set">
-    <p class="back-link"><a href="<?php echo $this->getUrl('customer/account/', array('_current' => true)); ?>"><small>« </small>Back</a></p>
-</div>
+    <p><?php echo $this->__('You have no support tickets.'); ?></p>
+<?php endif; ?>
