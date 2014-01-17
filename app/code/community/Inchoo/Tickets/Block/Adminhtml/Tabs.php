@@ -14,7 +14,7 @@ class Inchoo_Tickets_Block_Adminhtml_Tabs extends Mage_Adminhtml_Block_Widget_Ta
         $this->addTab('active_tickets', array(
             'label' => Mage::helper('inchoo_tickets')->__('Active tickets'),
             'title' => Mage::helper('inchoo_tickets')->__('View active tickets'),
-            'content' => $this->getLayout()->createBlock('inchoo_tickets/adminhtml_active')->toHtml(),
+            'content' => $this->getLayout()->createBlock('inchoo_tickets/adminhtml_active_grid')->toHtml(),
             'active' => true,
         ));
 
